@@ -507,7 +507,7 @@ class S3Adapter(StorageAdapter):
                  bucket,
                  profile_name=None,
                  anonymous=False,
-                 cache_on_local_disk=True,
+                 cache_on_local_disk=False,
                  cache_root_path=None,
                  verbose=False,
                  max_num_threads=64,
