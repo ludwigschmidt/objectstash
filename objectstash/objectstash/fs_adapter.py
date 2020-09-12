@@ -19,7 +19,10 @@ class FSAdapter(StorageAdapter):
         elif prefix[0] == "/":
             logger.warning(f"Prefix / not supported for FSAdapter returning []")
             return []
-        return [str(x.relative_to(self.rootdir)) for x in self.rootdir.glob(f"{prefix}*") if x.is_file()]
+        glob_res = list(self.rootdir.glob(f"{prefix}*"))
+        files = [str(x.relative_to(self.rootdir)) for x in glob_res if x.is_file()]
+        dirs = [str(x.relative_to(self.rootdir)) + "/" for x in glob_res if x.is_dir()]
+        return files + dirs
 
     def exists(self, key):
         return (self.rootdir / key).exists()

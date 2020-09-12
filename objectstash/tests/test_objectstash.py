@@ -76,10 +76,9 @@ def generic_test(stash, tmpdir):
     with open(tmp_download_filename.resolve(), 'rb') as f:
         tmp_data = f.read()
     assert tmp_data == data1
-
-    assert set(stash.list_keys('')) == {'3', 'test_key', 'test1.txt'}
+    assert set(stash.list_keys('')) == {'3', 'test_key', 'test1.txt', 'a/'}
     assert set(stash.list_keys('/')) == set()
-    assert set(stash.list_keys('a/')) == set()
+    assert set(stash.list_keys('a/')) == {'a/test/'}
     assert set(stash.list_keys('a/test/')) == {'a/test/key'}
     assert set(stash.list_keys('test')) == {'test_key', 'test1.txt'}
 

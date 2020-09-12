@@ -334,9 +334,10 @@ def put_s3_object_bytes_with_backoff(file_bytes, key, client, bucket, num_tries=
 # TODO: migrate to list_objects_v2
 def list_all_keys(client, bucket, prefix, max_keys=None):
     objects = client.list_objects(Bucket=bucket, Prefix=prefix, Delimiter='/')
-    if objects.get('Contents') is None:
-        return []
-    keys = list(map(lambda x: x['Key'], objects.get('Contents', [] )))
+    contents = objects.get("Contents", [])
+    common_prefixes = objects.get("CommonPrefixes", [])
+    keys = list([x['Key'] for x in contents])
+    keys += list([x["Prefix"] for x in common_prefixes])
     truncated = objects['IsTruncated']
     next_marker = objects.get('NextMarker')
     while truncated:
