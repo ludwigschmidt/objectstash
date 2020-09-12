@@ -111,6 +111,10 @@ def generic_s3_setup(bucket_name='test_bucket'):
     conn.create_bucket(Bucket=bucket_name)
 
 
+def test_fs_adapter(tmp_path):
+    stash = ObjectStash(rootdir="/tmp/fs_adapter/")
+    generic_test(stash, tmp_path)
+
 @mock_s3
 def test_s3_adapter_without_local_cache(tmp_path):
     # TODO: add a test that interfaces with real S3
