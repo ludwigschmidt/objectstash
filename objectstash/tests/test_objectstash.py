@@ -76,10 +76,9 @@ def generic_test(stash, tmpdir):
     with open(tmp_download_filename.resolve(), 'rb') as f:
         tmp_data = f.read()
     assert tmp_data == data1
-
-    assert set(stash.list_keys('')) == {'3', 'test_key', 'test1.txt'}
+    assert set(stash.list_keys('')) == {'3', 'test_key', 'test1.txt', 'a/'}
     assert set(stash.list_keys('/')) == set()
-    assert set(stash.list_keys('a/')) == set()
+    assert set(stash.list_keys('a/')) == {'a/test/'}
     assert set(stash.list_keys('a/test/')) == {'a/test/key'}
     assert set(stash.list_keys('test')) == {'test_key', 'test1.txt'}
 
@@ -110,6 +109,10 @@ def generic_s3_setup(bucket_name='test_bucket'):
     conn = boto3.resource('s3', region_name='us-east-1')
     conn.create_bucket(Bucket=bucket_name)
 
+
+def test_fs_adapter(tmp_path):
+    stash = ObjectStash(rootdir="/tmp/fs_adapter/")
+    generic_test(stash, tmp_path)
 
 @mock_s3
 def test_s3_adapter_without_local_cache(tmp_path):

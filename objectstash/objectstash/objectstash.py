@@ -1,4 +1,5 @@
 from .s3_adapter import S3Adapter
+from .fs_adapter import FSAdapter
     
 
 def is_get_list_like(x):
@@ -24,6 +25,9 @@ class ObjectStash:
         if 's3_bucket' in kwargs:
             bucket = kwargs.pop('s3_bucket')
             self.adapter = S3Adapter(bucket, **kwargs)
+        elif 'rootdir' in kwargs:
+            rootdir = kwargs.pop('rootdir')
+            self.adapter = FSAdapter(rootdir)
         else:
             raise ValueError(f'Currently supported keywords: s3_bucket .')
 
