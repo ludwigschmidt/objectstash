@@ -1,3 +1,4 @@
 objectstash/objectstash/__pycache__
 objectstash/tests/__pycache__
 objectstash/dist
+objectstash/docs/_build
