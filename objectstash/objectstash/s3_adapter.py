@@ -331,7 +331,6 @@ def put_s3_object_bytes_with_backoff(file_bytes, key, client, bucket, num_tries=
                 num_tries_left -= 1
 
 
-# TODO: migrate to list_objects_v2
 def list_all_keys(client, bucket, prefix, max_keys=None):
     objects = client.list_objects(Bucket=bucket, Prefix=prefix, Delimiter='/')
     contents = objects.get("Contents", [])

@@ -31,7 +31,6 @@ class ObjectStash:
         else:
             raise ValueError(f'Currently supported keywords: s3_bucket .')
 
-    # TODO: decide on the semantics for returning keys and / or folders / common prefixes
     def list_keys(self, prefix, **kwargs):
         """Lists keys in the stash under the given prefix.
 
