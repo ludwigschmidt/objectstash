@@ -43,13 +43,15 @@ def delete_key(client,
         local_filepath = cache_root_path / key
         if local_filepath.is_file():
             local_filepath.unlink()
-            print(f'Removed local cache file {local_filepath}')
+            if verbose:
+                print(f'Removed local cache file {local_filepath}')
     delay = initial_delay
     num_tries_left = num_tries
     while num_tries_left >= 1:
         try:
             client.delete_object(Key=key, Bucket=bucket)
-            print(f'Deleted key {key}')
+            if verbose:
+                print(f'Deleted key {key}')
             return
         except:
             if num_tries_left == 1:

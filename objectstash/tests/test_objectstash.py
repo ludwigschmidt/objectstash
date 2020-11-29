@@ -111,8 +111,12 @@ def generic_s3_setup(bucket_name='test_bucket'):
 
 
 def test_fs_adapter(tmp_path):
-    stash = ObjectStash(rootdir="/tmp/fs_adapter/")
-    generic_test(stash, tmp_path)
+    stash_path = tmp_path / 'fs_stash'
+    stash_path.mkdir()
+    stash = ObjectStash(rootdir=stash_path)
+    tmp_data_path = tmp_path / 'tmp_data'
+    tmp_data_path.mkdir()
+    generic_test(stash, tmp_data_path)
 
 @mock_s3
 def test_s3_adapter_without_local_cache(tmp_path):
