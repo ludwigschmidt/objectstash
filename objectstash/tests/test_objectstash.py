@@ -9,7 +9,7 @@ from objectstash import __version__, ObjectStash
 
 
 def test_version():
-    assert __version__ == '0.1.0'
+    assert __version__ == '0.1.1'
 
 
 def generic_test(stash, tmpdir):
