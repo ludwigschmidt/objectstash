@@ -508,6 +508,12 @@ class S3Adapter(StorageAdapter):
     def __init__(self,
                  bucket,
                  profile_name=None,
+                 access_key=None,
+                 secret_key=None,
+                 endpoint_url=None,
+                 region_name=None,
+                 ssl_certificate=None,
+                 signature_version=None,
                  anonymous=False,
                  cache_on_local_disk=False,
                  cache_root_path=None,
@@ -527,16 +533,25 @@ class S3Adapter(StorageAdapter):
             assert profile_name in boto3.Session()._session.available_profiles
         
         def get_client():
+            if profile_name is not None:
+                session = boto3.Session(profile_name=profile_name)
+            else:
+                session = boto3.Session()
             if anonymous:
                 # TODO: test anonymous connections
-                session = boto3.Session()
-                return session.client('s3', config=Config(signature_version=botocore.UNSIGNED))
+                assert signature_version is None
+                config = Config(signature_version=botocore.UNSIGNED)
+            elif signature_version is not None:
+                config = Config(signature_version=signature_version)
             else:
-                if profile_name is not None:
-                    session = boto3.Session(profile_name=profile_name)
-                else:
-                    session = boto3.Session()
-                return session.client('s3')
+                config = None
+            return session.client('s3',
+                                  config=config,
+                                  region_name=region_name,
+                                  verify=ssl_certificate,
+                                  endpoint_url=endpoint_url,
+                                  aws_access_key_id=access_key,
+                                  aws_secret_access_key=secret_key)
         self.get_client = get_client
         self.client = self.get_client()
 

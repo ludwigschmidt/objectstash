@@ -1,3 +1,4 @@
+import json
 import os
 import random
 import time
@@ -160,3 +161,16 @@ def test_s3_adapter_parallel_with_local_cache(tmp_path):
     stash = ObjectStash(s3_bucket='test_bucket', cache_root_path=cache_path)
 
     large_parallel_test(stash)
+
+
+def test_minio():
+    with open('/Users/ludo/code/configs/objectstash_minio_unittest.json', 'r') as f:
+        config = json.load(f)
+    stash = ObjectStash(s3_bucket=config['bucket'],
+                        endpoint_url=config['endpoint_url'],
+                        region_name=config['region_name'],
+                        access_key=config['access_key'],
+                        secret_key=config['secret_key'],
+                        signature_version=config['signature_version'],
+                        ssl_certificate=config['ssl_certificate'])
+    assert stash.get('hello.txt').decode('utf-8') == 'hello minio\n'

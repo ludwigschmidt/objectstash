@@ -29,7 +29,7 @@ class ObjectStash:
             rootdir = kwargs.pop('rootdir')
             self.adapter = FSAdapter(rootdir)
         else:
-            raise ValueError(f'Currently supported keywords: s3_bucket .')
+            raise ValueError(f'Currently supported keywords: "s3_bucket" and "rootdir".')
 
     def list_keys(self, prefix, **kwargs):
         """Lists keys in the stash under the given prefix.
